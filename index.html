@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Discord Date Tool</title>
+        <style>
+            body{
+                background-color: #313338;
+                color:white;
+                font-family:monospace;
+            }
+            h1, h2, h3{
+                text-align: center;
+            }
+            h1{
+                font-size: 4em;
+            }
+            h2{
+                font-size: 3em;
+            }
+            h3{
+                font-size: 2em;
+            }
+            p{
+                text-align: center;
+            }
+            input[type=date]{
+                font-size: 4em;
+            }
+            input[type=datetime-local], fieldset, #dateOutput{
+                border-radius: 15px;
+                border: 5px solid gray;
+                background-color: inherit;
+                color: lightgray;
+                font-size: 3em;
+            }
+
+            fieldset span{
+                font-size: .5em;
+                margin-left: 0.5em;
+                color: darkgray;
+            }
+            .desc{
+                font-size: 2em;
+            }
+
+            /* Kindle animation */
+            @keyframes blades-rotate{
+                from{
+                    transform: rotate(0deg);
+                }
+                to{
+                    transform: rotate(360deg);
+                }
+            }
+
+            .blades{
+                position:absolute;
+                animation: blades-rotate 10s linear 0s infinite;
+                z-index: -1;
+            }
+            .blades, .kindle{
+                width:500px;
+                height:500px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Discord Date Tool</h1>
+        <p>
+            <input id="discordDate" type="datetime-local"/>
+        </p>
+        <h2>Date Format</h2>
+        <h3>Example date: 1/2/2023 4:56PM</h3>
+        <form id="timeFormatForm">
+            <fieldset id="timeFormatSelection">
+            </fieldset>
+        </form>
+        <br>
+        <p>
+            <input type="text" id="dateOutput" placeholder="Enter Valid Date + Time Format" readonly/>
+        </p>
+
+        <h2>What Is This?!</h2>
+
+        <p class="desc">Set up a timezone independent date on discord to notify others across the world when an event is going to happen. Placing this in your message will create a dynamic date that changes based on what time zone you are in. <br> <a href="https://discord.com/developers/docs/reference#message-formatting-timestamp-styles">(Discord Documentation)</a></p>
+
+        <p>
+            <img class="blades" src="./blades.svg"/>
+            <img class="kindle" src="./islamedMyKindlePath.svg"/>
+        </p>
+
+        <h2>
+            Made by iSlammedMyKindle<br>
+            <a href="https://github.com/iSlammedMyKindle">(Github)</a>
+            <a href="https://twitch.tv/islammedmykindle">(Twitch)</a>
+        </h2>
+
+        <script>
+            const radioList = {
+                "shortTime":["Short Time", "16:56", "t"],
+                "longTime":["Long Time","16:56:00", "T"],
+                "shortDate":["Short Date", "1/2/2023", "d"],
+                "longDate":["Long Date", "January 20 2023", "D"],
+                "shortDateTime":["Short Date/Time", "January 20 2023 4:56 PM", "f"],
+                "longDateTime":["Long Date/Time", "Monday, January 2, 2023 4:56 PM", "F"],
+                "relativeTime":["Relative Time", "6 months ago", "R"],
+            }
+
+            // Create the radios
+            for(const radio in radioList){
+                
+                // Radio
+                const radioElem = document.createElement('input');
+                radioElem.type = 'radio';
+                radioElem.name = "timeFormat";
+                radioElem.id = radio;
+                radioElem.value = radio;
+
+                timeFormatSelection.appendChild(radioElem);
+
+                // Label
+                const labelElem = document.createElement('label');
+                labelElem.setAttribute('for', radioElem.id);
+                labelElem.innerText = radioList[radio][0];
+
+                timeFormatSelection.appendChild(labelElem);
+
+                const exampleSpan = document.createElement('span');
+                exampleSpan.innerText = '('+radioList[radio][1]+')';
+                timeFormatSelection.appendChild(exampleSpan);
+                timeFormatSelection.appendChild(document.createElement('br'));
+            }
+
+            // Create the form data event listener
+            function outputDate(){
+                // Grab form data and obtain the radio value & time values
+                const dateField = discordDate.valueAsDate?.getTime();
+                const formatType = new FormData(timeFormatForm).get('timeFormat');
+
+                if(!dateField || !formatType){
+                    dateOutput.value = "";
+                    return;
+                }
+
+                dateOutput.value = '<t:'+((dateField / 1000) + (discordDate.valueAsDate?.getTimezoneOffset() * 60)) + ':' + radioList[formatType][radioList[formatType].length-1] + ">";
+            }
+
+            function hilightRes(){
+                // Automatically select the date once it's inserted
+                dateOutput.selectionStart = 0;
+                dateOutput.selectionEnd = dateOutput.value.length;
+            }
+
+            // Grab the main form element to change the input date
+            timeFormatForm.addEventListener('change', outputDate);
+            discordDate.addEventListener('keydown', outputDate);
+            discordDate.addEventListener('change', outputDate);
+            dateOutput.addEventListener('click', hilightRes);
+        </script>
+    </body>
+</html>
