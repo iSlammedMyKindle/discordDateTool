@@ -134,7 +134,8 @@
             // Create the form data event listener
             function outputDate(){
                 // Grab form data and obtain the radio value & time values
-                const dateField = discordDate.valueAsDate?.getTime();
+                const dateObj = new Date(discordDate.value);
+                const dateField = dateObj?.getTime();
                 const formatType = new FormData(timeFormatForm).get('timeFormat');
 
                 if(!dateField || !formatType){
@@ -142,7 +143,7 @@
                     return;
                 }
 
-                dateOutput.value = '<t:'+((dateField / 1000) + (discordDate.valueAsDate?.getTimezoneOffset() * 60)) + ':' + radioList[formatType][radioList[formatType].length-1] + ">";
+                dateOutput.value = '<t:'+((dateField / 1000) + (dateObj.getTimezoneOffset() * 60)) + ':' + radioList[formatType][radioList[formatType].length-1] + ">";
             }
 
             function hilightRes(){
