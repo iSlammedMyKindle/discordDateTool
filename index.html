@@ -43,6 +43,13 @@
                 font-size: 2em;
             }
 
+            a{
+                color: white;
+            }
+            a:visited{
+                color: gray;
+            }
+
             /* Kindle animation */
             @keyframes blades-rotate{
                 from{
@@ -143,7 +150,7 @@
                     return;
                 }
 
-                dateOutput.value = '<t:'+(dateField / 1000) + ':' + radioList[formatType][radioList[formatType].length-1] + ">";
+                dateOutput.value = '<t:' + (dateField / 1000) + ':' + radioList[formatType][radioList[formatType].length-1] + '>';
             }
 
             function hilightRes(){
