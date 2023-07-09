@@ -143,7 +143,7 @@
                     return;
                 }
 
-                dateOutput.value = '<t:'+((dateField / 1000) + (dateObj.getTimezoneOffset() * 60)) + ':' + radioList[formatType][radioList[formatType].length-1] + ">";
+                dateOutput.value = '<t:'+(dateField / 1000) + ':' + radioList[formatType][radioList[formatType].length-1] + ">";
             }
 
             function hilightRes(){
