@@ -73,19 +73,25 @@
     </head>
     <body>
         <h1>Discord Date Tool</h1>
+        <h2>1. Select a date & time</h2>
         <p>
-            <input id="discordDate" type="datetime-local"/>
+            <input id="discordDate" type="datetime-local" onchange="step2.style.display = ''"/>
         </p>
-        <h2>Date Format</h2>
-        <h3>Example date: 1/2/2023 4:56PM</h3>
-        <form id="timeFormatForm">
-            <fieldset id="timeFormatSelection">
-            </fieldset>
-        </form>
+        <span id="step2" style="display:none">
+            <h2>2. Select A Date Format</h2>
+            <h3>Example date: 1/2/2023 4:56PM</h3>
+            <form id="timeFormatForm">
+                <fieldset id="timeFormatSelection" onchange="step3.style.display = ''">
+                </fieldset>
+            </form>
+        </span>
         <br>
-        <p>
-            <input type="text" id="dateOutput" placeholder="Enter Valid Date + Time Format" readonly/>
-        </p>
+        <span id="step3" style="display:none">
+            <h2>3. Copy the code</h2>
+            <p>
+                <input type="text" id="dateOutput" placeholder="Enter Valid Date + Time Format" readonly/>
+            </p>
+        </span>
 
         <h2>What Is This?!</h2>
 
@@ -97,7 +103,8 @@
         </p>
 
         <h2>
-            Made by iSlammedMyKindle<br>
+            Made by iSlammedMyKindle
+            <br>
             <a href="https://github.com/iSlammedMyKindle">(Github)</a>
             <a href="https://twitch.tv/islammedmykindle">(Twitch)</a>
         </h2>
@@ -164,6 +171,9 @@
             discordDate.addEventListener('keydown', outputDate);
             discordDate.addEventListener('change', outputDate);
             dateOutput.addEventListener('click', hilightRes);
+
+            // The browser sometimes stores a previous value in this field. If that happens just proceed to the next step
+            if(discordDate.value) discordDate.onchange();
         </script>
 
 
